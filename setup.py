@@ -21,6 +21,7 @@ setup(
     version=__version__,
     description='Notice middleware for EH Forwarder Bot, notice and tag messages.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author='WolfSilver',
     author_email='aexou@outlook.com',
     url='https://github.com/efb-middleware/notice',
@@ -29,7 +30,7 @@ setup(
     python_requires='>=3.6',
     keywords=['ehforwarderbot', 'EH Forwarder Bot', 'EH Forwarder Bot Middleware', 'Notice', 'Tag'],
     classifiers=[
-        "Development Status :: 1 - Beta",
+        "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
         "Intended Audience :: Developers",
         "Intended Audience :: End Users/Desktop",
