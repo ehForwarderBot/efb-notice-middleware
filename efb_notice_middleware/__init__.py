@@ -4,8 +4,6 @@ import os
 import re
 import logging
 import string
-from urllib.parse import quote
-import urllib.request
 from tempfile import NamedTemporaryFile
 from typing import Optional
 from ruamel.yaml import YAML
@@ -13,19 +11,20 @@ from ruamel.yaml import YAML
 from ehforwarderbot import EFBMiddleware, EFBMsg, EFBStatus, \
     EFBChat, coordinator, EFBChannel, utils
 from ehforwarderbot.message import EFBMsgSubstitutions
-# from link_preview import link_preview
+
+from .__version__ import __version__ as version
+
 
 class NoticeMiddleware(EFBMiddleware):
     """
     EFB Middleware - NoticeMiddleware
     """
 
-    middleware_id = "notice.NoticeMiddleware"
-    middleware_name = "Notice Middleware"
-    __version__: str = '1.0.0'
+    middleware_id: str = "notice.NoticeMiddleware"
+    middleware_name: str = "Notice Middleware"
+    __version__: str = version
 
     logger: logging.Logger = logging.getLogger("plugins.%s" % middleware_id)
-
 
     def __init__(self, instance_id=None):
         super().__init__()
@@ -56,13 +55,15 @@ class NoticeMiddleware(EFBMiddleware):
             # Verify configuration
             notices = data.get("notices", [])
             if notices and not isinstance(notices, list):
-                raise ValueError("notices are expected to be a list, but {} is found.".format(notices))
+                raise ValueError(
+                    "notices are expected to be a list, but {} is found.".format(notices))
             if len(notices) > 0:
                 self.notices_pattern = re.compile('|'.join(notices))
 
             tags = data.get("tags", [])
             if tags and not isinstance(tags, list):
-                raise ValueError("tags are expected to be a list, but {} is found.".format(tags))
+                raise ValueError(
+                    "tags are expected to be a list, but {} is found.".format(tags))
             if len(tags) > 0:
                 self.tagMap = {}
                 _tag = []
@@ -90,7 +91,6 @@ class NoticeMiddleware(EFBMiddleware):
             Optional[:obj:`.EFBMsg`]: Processed message or None if discarded.
         """
 
-
         # self.logger.log(99, "Received message from NoticeMiddleware: %s", message.__dict__)
 
         if self.sent_by_master(message):
@@ -117,9 +117,10 @@ class NoticeMiddleware(EFBMiddleware):
                             tag = self.tagMap.get(item, item)
                             tags[tag] = True
                             append += '#%s  ' % tag
-                    attributes.description = getattr(attributes, 'description', '').strip() + append.strip(' ')
+                    attributes.description = getattr(
+                        attributes, 'description', '').strip() + append.strip(' ')
 
-        text  = message.text
+        text = message.text
         if text:
             if self.tags_pattern:
                 result = set(self.tags_pattern.findall(text))

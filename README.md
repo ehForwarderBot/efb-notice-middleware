@@ -1,12 +1,49 @@
+# NoticeMiddleware: A middleware for EFB 
 
-### 主要功能
+## Notice
 
-- 在关闭消息通知的tg群组内，通过@来提醒
-- 给微信消息添加 `#标签`，方便查找
+**Middleware ID**: `notice.NoticeMiddleware`
 
-### 使用  
+**NoticeMiddleware** is a middleware for EFB, to notice by @ in muted telegram group.  
 
-`~/.ehforwarderbot/profiles/default/notice.NoticeMiddleware`目录下创建配置文件`config.yaml`  
+Be aware that this is a very early develop version. Please let me know if you found any problem.
+
+You need to use **NoticeMiddleware** on top of [EFB](https://ehforwarderbot.readthedocs.io). Please check the document and install EFB first.
+
+## Dependense
+
+* Python >=3.6
+* EFB >=2.0.0
+* PyYaml
+
+## Install
+
+* Install
+
+```bash
+pip3 install efb-notice-middleware
+```
+
+* Register to EFB
+Following [this document](https://ehforwarderbot.readthedocs.io/en/latest/getting-started.html) to edit the config file. The config file by default is `~/.ehforwarderbot/profiles/default`. It should look like:
+
+```yaml
+master_channel: foo.demo_master
+slave_channels:
+- foo.demo_slave
+- bar.dummy
+middlewares:
+- foo.other_middlewares
+- notice.NoticeMiddleware
+```
+
+You only need to add the last line to your config file.
+
+* Restart EFB.
+
+## Usage
+
+Create config file `config.yaml` in `~/.ehforwarderbot/profiles/default/notice.NoticeMiddleware`
 
 ```yaml
 notices:
@@ -18,18 +55,4 @@ notices:
 tags:
 - 取件通知
 - 超期提醒:取件通知
-```
-
-### 安装
-
-`notice.py`拷贝到`~/.ehforwarderbot/modules/`目录  
-
-`~/.ehforwarderbot/profiles/default/config.yaml`文件添加配置启用中间件
-
-```yaml
-master_channel: blueset.telegram
-slave_channels:
-- blueset.wechat
-middlewares:
-- notice.NoticeMiddleware
 ```
