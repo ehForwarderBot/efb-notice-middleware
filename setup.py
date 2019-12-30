@@ -12,7 +12,7 @@ version_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
 __version__ = ""
 exec(open(version_path).read())
 
-long_description = open('README.md').read()
+long_description = open('README.md', encoding="utf-8").read()
 
 setup(
     name='efb-notice-middleware',
