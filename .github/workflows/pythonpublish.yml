@@ -30,7 +30,6 @@ jobs:
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        isbeta: cat ./efb_notice_middleware/__version__.py | grep 'version' | grep -E 'a|b' | wc -l
-      run: twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-      if: isbeta > 0
-        
+      run: |
+        isbeta = `cat ./efb_notice_middleware/__version__.py | grep 'version' | grep -E 'a|b' | wc -l`
+        if [ $isbeta -gt 0 ]; then twine upload --repository-url https://test.pypi.org/legacy/ dist/*; else echo "release to pypi..."; fi
