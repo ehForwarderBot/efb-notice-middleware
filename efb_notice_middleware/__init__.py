@@ -8,9 +8,9 @@ from tempfile import NamedTemporaryFile
 from typing import Optional
 from ruamel.yaml import YAML
 
-from ehforwarderbot import EFBMiddleware, EFBMsg, EFBStatus, \
-    EFBChat, coordinator, EFBChannel, utils
-from ehforwarderbot.message import EFBMsgSubstitutions
+from ehforwarderbot import EFBMiddleware, Message, \
+    BaseChat, coordinator, Channel, utils
+from ehforwarderbot.message import Substitutions
 
 from .__version__ import __version__ as version
 
@@ -29,7 +29,7 @@ class NoticeMiddleware(EFBMiddleware):
     def __init__(self, instance_id=None):
         super().__init__()
 
-        if hasattr(coordinator, "master") and isinstance(coordinator.master, EFBChannel):
+        if hasattr(coordinator, "master") and isinstance(coordinator.master, Channel):
             self.admin = coordinator.master.config['admins'][0]
 
         if hasattr(coordinator, "slaves") and coordinator.slaves['blueset.wechat']:
@@ -75,20 +75,20 @@ class NoticeMiddleware(EFBMiddleware):
 
                 self.tags_pattern = re.compile('|'.join(_tag))
 
-    def sent_by_master(self, message: EFBMsg) -> bool:
+    def sent_by_master(self, message: Message) -> bool:
         author = message.author
         if author and author.module_id and author.module_id == 'blueset.telegram':
             return True
         else:
             return False
 
-    def process_message(self, message: EFBMsg) -> Optional[EFBMsg]:
+    def process_message(self, message: Message) -> Optional[Message]:
         """
         Process a message with middleware
         Args:
-            message (:obj:`.EFBMsg`): Message object to process
+            message (:obj:`.Message`): Message object to process
         Returns:
-            Optional[:obj:`.EFBMsg`]: Processed message or None if discarded.
+            Optional[:obj:`.Message`]: Processed message or None if discarded.
         """
 
         # self.logger.log(99, "Received message from NoticeMiddleware: %s", message.__dict__)
@@ -137,8 +137,8 @@ class NoticeMiddleware(EFBMiddleware):
                 result = self.notices_pattern.findall(text)
                 if len(result) > 0:
                     message.text = '🔊 ' + message.text
-                    message.substitutions = EFBMsgSubstitutions({
-                        (0, 1): EFBChat(self.channel_ews).self()
+                    message.substitutions = Substitutions({
+                        (0, 1): BaseChat(self.channel_ews).self
                     })
 
         return message
