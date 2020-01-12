@@ -139,7 +139,7 @@ class NoticeMiddleware(Middleware):
                 if len(result) > 0:
                     message.text = '🔊 ' + message.text
                     message.substitutions = Substitutions({
-                        (0, 1): PrivateChat(self.channel_ews).self
+                        (0, 1): PrivateChat(channel=self.channel_ews).self
                     })
 
         return message
