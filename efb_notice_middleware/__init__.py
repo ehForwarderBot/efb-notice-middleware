@@ -8,14 +8,14 @@ from tempfile import NamedTemporaryFile
 from typing import Optional
 from ruamel.yaml import YAML
 
-from ehforwarderbot import EFBMiddleware, Message, \
+from ehforwarderbot import Middleware, Message, \
     BaseChat, coordinator, Channel, utils
 from ehforwarderbot.message import Substitutions
 
 from .__version__ import __version__ as version
 
 
-class NoticeMiddleware(EFBMiddleware):
+class NoticeMiddleware(Middleware):
     """
     EFB Middleware - NoticeMiddleware
     """
