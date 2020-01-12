@@ -35,6 +35,7 @@ class NoticeMiddleware(Middleware):
 
         if hasattr(coordinator, "slaves") and coordinator.slaves['blueset.wechat']:
             self.channel_ews = coordinator.slaves['blueset.wechat']
+            self.get_chat_and_author = self.channel_ews.slave_message.get_chat_and_author
 
         self.notices_pattern = None
         self.tags_pattern = None
@@ -138,8 +139,9 @@ class NoticeMiddleware(Middleware):
                 result = self.notices_pattern.findall(text)
                 if len(result) > 0:
                     message.text = '🔊 ' + message.text
+                    chat, _ = self.get_chat_and_author(message)
                     message.substitutions = Substitutions({
-                        (0, 1): PrivateChat(channel=self.channel_ews).self
+                        (0, 1): chat.self
                     })
 
         return message
