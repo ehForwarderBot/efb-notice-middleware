@@ -10,7 +10,7 @@ from ruamel.yaml import YAML
 
 from ehforwarderbot import Middleware, Message, \
     coordinator, Channel, utils
-from ehforwarderbot.chat import BaseChat
+from ehforwarderbot.chat import Chat
 from ehforwarderbot.message import Substitutions
 
 from .__version__ import __version__ as version
@@ -139,7 +139,7 @@ class NoticeMiddleware(Middleware):
                 if len(result) > 0:
                     message.text = '🔊 ' + message.text
                     message.substitutions = Substitutions({
-                        (0, 1): BaseChat(self.channel_ews).self
+                        (0, 1): Chat(self.channel_ews).self
                     })
 
         return message
