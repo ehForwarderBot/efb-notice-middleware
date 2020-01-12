@@ -10,7 +10,6 @@ from ruamel.yaml import YAML
 
 from ehforwarderbot import Middleware, Message, \
     coordinator, Channel, utils
-from ehforwarderbot.chat import PrivateChat
 from ehforwarderbot.message import Substitutions
 
 from .__version__ import __version__ as version
@@ -35,7 +34,6 @@ class NoticeMiddleware(Middleware):
 
         if hasattr(coordinator, "slaves") and coordinator.slaves['blueset.wechat']:
             self.channel_ews = coordinator.slaves['blueset.wechat']
-            self.get_chat_and_author = self.channel_ews.slave_message.get_chat_and_author
 
         self.notices_pattern = None
         self.tags_pattern = None
@@ -139,9 +137,8 @@ class NoticeMiddleware(Middleware):
                 result = self.notices_pattern.findall(text)
                 if len(result) > 0:
                     message.text = '🔊 ' + message.text
-                    chat, _ = self.get_chat_and_author(message)
                     message.substitutions = Substitutions({
-                        (0, 1): chat.self
+                        (0, 1): message.chat.self
                     })
 
         return message
