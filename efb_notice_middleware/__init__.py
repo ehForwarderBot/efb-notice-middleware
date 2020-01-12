@@ -9,7 +9,8 @@ from typing import Optional
 from ruamel.yaml import YAML
 
 from ehforwarderbot import Middleware, Message, \
-    BaseChat, coordinator, Channel, utils
+    coordinator, Channel, utils
+from ehforwarderbot.chat import BaseChat
 from ehforwarderbot.message import Substitutions
 
 from .__version__ import __version__ as version
