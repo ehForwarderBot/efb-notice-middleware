@@ -1,4 +1,5 @@
 [![PyPI release](https://img.shields.io/pypi/v/efb-notice-middleware.svg)](https://pypi.org/project/efb-notice-middleware/)
+[![Downloads](https://pepy.tech/badge/efb-notice-middleware/month)](https://pypi.org/project/efb-notice-middleware/)
 
 # NoticeMiddleware: A middleware for EFB 
 
