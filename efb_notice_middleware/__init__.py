@@ -50,7 +50,7 @@ class NoticeMiddleware(Middleware):
             return
 
         with config_path.open() as f:
-            data = YAML().load(f)
+            data = YAML().safe_load(f)
 
             # Verify configuration
             notices = data.get("notices", [])
