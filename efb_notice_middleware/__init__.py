@@ -141,4 +141,14 @@ class NoticeMiddleware(Middleware):
                         (0, 1): message.chat.self
                     })
 
+        chat = message.chat
+        if chat.name:
+            if self.notices_pattern:
+                result = self.notices_pattern.findall(chat.name)
+                if len(result) > 0:
+                    message.text = '🔊 ' + message.text
+                    message.substitutions = Substitutions({
+                        (0, 1): message.chat.self
+                    })
+
         return message
