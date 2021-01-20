@@ -97,14 +97,16 @@ class NoticeMiddleware(Middleware):
             return message
 
         tags = {}
+        noticed = False
 
         attributes = message.attributes
         if getattr(attributes, 'title', None) or getattr(attributes, 'description', None):
             search_text = f"{getattr(attributes, 'title', '')}{getattr(attributes, 'description', '')}"
-            if self.notices_pattern:
+            if self.notices_pattern and not noticed:
                 # self.logger.log(99, "Received message from NoticeMiddleware: %s", attributes.__dict__)
                 result = self.notices_pattern.findall(search_text)
                 if len(result) > 0:
+                    noticed = True
                     attributes.image = 'tg://user?id=%s' % self.admin
                     # self.logger.log(99, "Received message from NoticeMiddleware: %s", message.__repr__)
 
@@ -133,19 +135,21 @@ class NoticeMiddleware(Middleware):
                             append += '#%s  ' % tag
                     message.text = message.text.strip() + append.strip(' ')
 
-            if self.notices_pattern:
+            if self.notices_pattern and not noticed:
                 result = self.notices_pattern.findall(text)
                 if len(result) > 0:
+                    noticed = True
                     message.text = '🔊 ' + message.text
                     message.substitutions = Substitutions({
                         (0, 1): message.chat.self
                     })
 
         chat = message.chat
-        if chat.name:
+        if chat.name and not noticed:
             if self.notices_pattern:
                 result = self.notices_pattern.findall(chat.name)
                 if len(result) > 0:
+                    noticed = True
                     message.text = '🔊 ' + message.text
                     message.substitutions = Substitutions({
                         (0, 1): message.chat.self
